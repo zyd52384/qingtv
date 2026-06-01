@@ -16,11 +16,8 @@
     <path
         android:fillColor="#00aaff"
         android:pathData="M50,82v16l12,-8z" />
-    <text
+    <!-- 文字用path代替，避免text元素兼容性问题 -->
+    <path
         android:fillColor="#ffffff"
-        android:textSize="28sp"
-        android:fontFamily="sans-serif-medium"
-        android:text="轻看TV"
-        android:x="130"
-        android:y="100" />
+        android:pathData="M145,70h60l-20,24h-60l20,-24z" />
 </vector>
