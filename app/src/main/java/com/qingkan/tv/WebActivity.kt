@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
@@ -344,16 +345,16 @@ class WebActivity : ComponentActivity() {
             }
 
             // 数字键快速换台
-            KeyEvent.KEYCODE_0 -> loadChannel(18) // CCTV新闻
-            KeyEvent.KEYCODE_1 -> loadChannel(0)
-            KeyEvent.KEYCODE_2 -> loadChannel(1)
-            KeyEvent.KEYCODE_3 -> loadChannel(2)
-            KeyEvent.KEYCODE_4 -> loadChannel(3)
-            KeyEvent.KEYCODE_5 -> loadChannel(4)
-            KeyEvent.KEYCODE_6 -> loadChannel(5)
-            KeyEvent.KEYCODE_7 -> loadChannel(6)
-            KeyEvent.KEYCODE_8 -> loadChannel(7)
-            KeyEvent.KEYCODE_9 -> loadChannel(8)
+            KeyEvent.KEYCODE_0 -> { loadChannel(18); true } // CCTV新闻
+            KeyEvent.KEYCODE_1 -> { loadChannel(0); true }
+            KeyEvent.KEYCODE_2 -> { loadChannel(1); true }
+            KeyEvent.KEYCODE_3 -> { loadChannel(2); true }
+            KeyEvent.KEYCODE_4 -> { loadChannel(3); true }
+            KeyEvent.KEYCODE_5 -> { loadChannel(4); true }
+            KeyEvent.KEYCODE_6 -> { loadChannel(5); true }
+            KeyEvent.KEYCODE_7 -> { loadChannel(6); true }
+            KeyEvent.KEYCODE_8 -> { loadChannel(7); true }
+            KeyEvent.KEYCODE_9 -> { loadChannel(8); true }
 
             else -> super.onKeyDown(keyCode, event)
         }
