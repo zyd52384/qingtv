@@ -19,23 +19,22 @@ jobs:
           distribution: 'temurin'
 
       - name: Generate Gradle Wrapper
-        run: |
-          gradle wrapper --gradle-version=8.5
+        run: gradle wrapper --gradle-version=8.5
 
-      - name: Build Free APK
-        run: ./gradlew assembleFreeRelease
+      - name: Build Free APK (Debug)
+        run: ./gradlew assembleFreeDebug
 
-      - name: Build Pro APK
-        run: ./gradlew assembleProRelease
+      - name: Build Pro APK (Debug)
+        run: ./gradlew assembleProDebug
 
       - name: Upload Free APK
         uses: actions/upload-artifact@v4
         with:
           name: QingKanTV-Free
-          path: app/build/outputs/apk/free/release/*.apk
+          path: app/build/outputs/apk/free/debug/*.apk
 
       - name: Upload Pro APK
         uses: actions/upload-artifact@v4
         with:
           name: QingKanTV-Pro
-          path: app/build/outputs/apk/pro/release/*.apk
+          path: app/build/outputs/apk/pro/debug/*.apk

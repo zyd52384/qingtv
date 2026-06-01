@@ -9,6 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.qingkan.tv"
+
         minSdk = 21
         targetSdk = 34
         versionCode = 1
@@ -46,6 +47,7 @@ android {
         }
         debug {
             isMinifyEnabled = false
+            isDebuggable = true
         }
     }
 
