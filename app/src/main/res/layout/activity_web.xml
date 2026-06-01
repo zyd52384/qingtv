@@ -13,10 +13,70 @@
     <!-- 加载进度 -->
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_gravity="center"
         android:indeterminateTint="#00aaff" />
+
+    <!-- 频道菜单覆盖层 -->
+    <LinearLayout
+        android:id="@+id/channelOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#e6101a2e"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!-- 标题栏 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="#16213e"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="轻看TV · 频道列表"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="（方向键选择，OK键确认）"
+                android:textColor="#556677"
+                android:textSize="12sp"
+                android:layout_marginStart="12dp"
+                android:layout_gravity="center_vertical" />
+
+        </LinearLayout>
+
+        <!-- 频道网格 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/channelGrid"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:padding="16dp" />
+
+        <!-- 底部信息 -->
+        <TextView
+            android:id="@+id/tvChannelInfo"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#16213e"
+            android:gravity="center"
+            android:text="CCTV-1 综合"
+            android:textColor="#00aaff"
+            android:textSize="16sp" />
+
+    </LinearLayout>
 
     <!-- 顶部栏 -->
     <RelativeLayout
@@ -26,7 +86,8 @@
         android:background="#cc0d0d0d"
         android:gravity="center_vertical"
         android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingEnd="16dp"
+        android:visibility="visible">
 
         <ImageButton
             android:id="@+id/btnBack"
@@ -47,23 +108,13 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <ImageButton
-            android:id="@+id/btnFullscreen"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/btn_bg"
-            android:src="@drawable/ic_fullscreen"
-            android:contentDescription="全屏" />
-
     </RelativeLayout>
 
     <!-- 底部免费版提示栏 -->
     <LinearLayout
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="48dp"
         android:layout_gravity="bottom"
         android:background="#cc0d0d0d"
         android:gravity="center"
@@ -83,13 +134,13 @@
         <Button
             android:id="@+id/btnUpgrade"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="36dp"
             android:background="@drawable/btn_upgrade"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:text="开通全屏 →"
             android:textColor="#ffffff"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
     </LinearLayout>

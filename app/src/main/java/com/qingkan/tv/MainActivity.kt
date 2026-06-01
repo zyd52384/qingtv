@@ -30,9 +30,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openChannel(channel: Channel) {
+        val index = ChannelData.channels.indexOf(channel)
         val intent = Intent(this, WebActivity::class.java).apply {
-            putExtra("channel_name", channel.name)
-            putExtra("channel_url", channel.url)
+            putExtra("channel_index", index)
         }
         startActivity(intent)
     }
