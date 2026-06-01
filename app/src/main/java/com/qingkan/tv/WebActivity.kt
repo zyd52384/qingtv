@@ -64,6 +64,9 @@ class WebActivity : ComponentActivity() {
     }
 
     private fun setupWebView() {
+        // ★ 强制硬件渲染（对WebView视频播放至关重要）
+        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+
         webView.settings.apply {
             javaScriptEnabled = true
             domStorageEnabled = true
@@ -71,7 +74,12 @@ class WebActivity : ComponentActivity() {
             builtInZoomControls = false
             displayZoomControls = false
             mediaPlaybackRequiresUserGesture = false
-            userAgentString = "Mozilla/5.0 (Linux; Android 11; MIBOX4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.230 Safari/537.36"
+            allowContentAccess = true
+            allowFileAccess = true
+            mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+            loadWithOverviewMode = true
+            // Android TV User-Agent（模拟原生TV浏览器）
+            userAgentString = "Mozilla/5.0 (Linux; Android 11; Android TV) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.230 Safari/537.36"
         }
 
         webView.webViewClient = object : WebViewClient() {
@@ -80,14 +88,72 @@ class WebActivity : ComponentActivity() {
             }
             override fun onPageFinished(view: WebView?, url: String?) {
                 binding.progressBar.visibility = View.GONE
-                // 页面加载完→清理页面杂物
+                // 页面加载完 → 清理 + 自动播放视频
                 Handler(Looper.getMainLooper()).postDelayed({
-                    webView.evaluateJavascript(cleanPageJS, null)
-                }, 2000)
+                    cleanAndPlay()
+                }, 1500)
+            }
+            override fun onLoadResource(view: WebView?, url: String?) {
+                super.onLoadResource(view, url)
             }
         }
 
         webView.webChromeClient = object : WebChromeClient() {}
+    }
+
+    private fun cleanAndPlay() {
+        val js = """
+            (function(){
+                // 1. 清理页面杂物
+                var s=document.createElement('style');
+                s.innerHTML='.topnav,.header,.footer,.nav,.navbar,.cctv-nav,.cctv-top,.cctv-footer,.g-nav,.g-topnav,.g-footer,.side-nav,.sidenav,.sidebar,.login-box,.login-pop,.popup-layer,.banner,.ad-banner,.ad-box,.zqj-menu,.menu-box,.hot-words,.hotwords,.link-box,.links-box,.recommend-box,.relate-box,[class*="nav"],[class*="menu"],[class*="sidebar"],[class*="login"],[class*="popup"],[class*="ad-"],[class*="banner"],[class*="footer"],[class*="header"],[class*="recommend"],[class*="relate"],#popup,#bpopup,#nav,#header,#footer,.login,.popup,.advertisement,.copyright,.copy-right{display:none!important}body{margin:0!important;padding:0!important;background:#000!important;overflow:hidden!important}.video-box,.player-box,.live-box,[class*="player"],[class*="video"],[class*="live"],[class*="stream"],#player,#video,#live,.cctv-player,.cctv-live,.content-box,.main-box,.container,.wrap{position:fixed!important;top:0!important;left:0!important;width:100%!important;height:100%!important;margin:0!important;padding:0!important;z-index:1!important;background:#000!important}video,iframe,embed,object{width:100%!important;height:100%!important}';
+                document.head.appendChild(s);
+
+                // 2. 关弹窗
+                document.querySelectorAll('.close,.popup-close,.pop-close,.video-close,.tcaptcha,.mask').forEach(function(b){b.click()});
+
+                // 3. 找到视频元素并强制播放
+                var played=false;
+                function tryPlay(el){
+                    if(!el || played) return;
+                    el.muted=true;
+                    el.playsInline=true;
+                    el.autoplay=true;
+                    el.preload='auto';
+                    el.play().then(function(){played=true;}).catch(function(e){console.log('play err:'+e.message);});
+                }
+                document.querySelectorAll('video').forEach(tryPlay);
+
+                // 4. 点击所有可能是播放按钮的元素
+                document.querySelectorAll('.play-btn,.player-btn,.play-icon,.play,.video-play,.cctv-play,.start-play,.big-play,[class*="play-btn"],[class*="play-icon"],[class*="start-play"]').forEach(function(b){b.click()});
+
+                // 5. 监听DOM变化 — 新加入的视频也触发播放
+                var obs=new MutationObserver(function(){
+                    document.querySelectorAll('video:not([data-qingtv])').forEach(function(el){
+                        el.setAttribute('data-qingtv','1');
+                        tryPlay(el);
+                        el.parentElement&&el.parentElement.click();
+                    });
+                });
+                obs.observe(document.body||document,{childList:true,subtree:true});
+
+                // 6. 滚动所有容器（某些页面需要滚动后才加载视频）
+                document.querySelectorAll('[class*="scroll"],[class*="container"]').forEach(function(el){el.scrollTop=0});
+
+                // 7. 再次尝试自动播放（setInterval until played）
+                if(!played){
+                    var iv=setInterval(function(){
+                        document.querySelectorAll('video').forEach(function(el){
+                            if(!el.src&&!el.querySelector('source')) return;
+                            el.muted=true;el.autoplay=true;
+                            el.play();
+                        });
+                    },1000);
+                    setTimeout(function(){clearInterval(iv);},10000);
+                }
+            })();
+        """.trimIndent()
+        webView.evaluateJavascript(js, null)
     }
 
     private fun loadChannel(index: Int) {
@@ -231,45 +297,5 @@ class WebActivity : ComponentActivity() {
         val tvName: TextView = itemView.findViewById(R.id.tvName)
     }
 
-    companion object {
-        private val cleanPageJS = """
-            javascript:(function(){
-                var css=document.createElement('style');
-                css.innerHTML=`
-                    .topnav,.header,.footer,.nav,.navbar,
-                    .cctv-nav,.cctv-top,.cctv-footer,
-                    .g-nav,.g-topnav,.g-footer,
-                    .side-nav,.sidenav,.sidebar,
-                    .login-box,.login-pop,.popup-layer,
-                    .banner,.ad-banner,.ad-box,
-                    .zqj-menu,.menu-box,
-                    .hot-words,.hotwords,
-                    .link-box,.links-box,
-                    .recommend-box,.relate-box,
-                    [class*="nav"],[class*="menu"],
-                    [class*="sidebar"],[class*="sidebar"],
-                    [class*="login"],[class*="popup"],
-                    [class*="ad-"],[class*="banner"],
-                    [class*="footer"],[class*="header"],
-                    [class*="recommend"],[class*="relate"],
-                    #popup,#bpopup,#nav,#header,#footer,
-                    .login,.popup,.advertisement,
-                    .copyright,.copy-right
-                { display:none!important; }
-                body{margin:0!important;padding:0!important;background:#000!important;overflow:hidden!important;}
-                .video-box,.player-box,.live-box,
-                [class*="player"],[class*="video"],[class*="live"],[class*="stream"],
-                #player,#video,#live,
-                .cctv-player,.cctv-live,
-                .content-box,.main-box,.container,.wrap
-                { position:fixed!important;top:0!important;left:0!important;width:100%!important;height:100%!important;margin:0!important;padding:0!important;z-index:1!important;background:#000!important; }
-                video,iframe,embed,object{width:100%!important;height:100%!important;}
-                `.trim();
-                document.head.appendChild(css);
-                var btns=document.querySelectorAll('.close,.popup-close');
-                btns.forEach(function(b){b.click()});
-                document.documentElement.style.overflow='hidden';
-            })();
-        """.trimIndent()
-    }
+    companion object {}
 }
