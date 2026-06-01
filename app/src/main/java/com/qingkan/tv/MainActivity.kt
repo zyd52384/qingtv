@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun openChannel(channel: Channel) {
         val index = ChannelData.channels.indexOf(channel)
-        val intent = Intent(this, WebActivity::class.java).apply {
+        val intent = Intent(this, PlayerActivity::class.java).apply {
             putExtra("channel_index", index)
         }
         startActivity(intent)

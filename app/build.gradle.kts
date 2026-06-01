@@ -69,4 +69,8 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("com.google.code.gson:gson:2.10.1")
+    // ExoPlayer
+    implementation("com.google.android.exoplayer:exoplayer-core:2.19.1")
+    implementation("com.google.android.exoplayer:exoplayer-hls:2.19.1")
+    implementation("com.google.android.exoplayer:exoplayer-ui:2.19.1")
 }

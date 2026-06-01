@@ -4,11 +4,12 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true">
 
-    <!-- WebView 播放器 -->
-    <WebView
-        android:id="@+id/webview"
+    <!-- ExoPlayer 播放器 -->
+    <com.google.android.exoplayer2.ui.StyledPlayerView
+        android:id="@+id/playerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_gravity="center" />
 
     <!-- 加载进度 -->
     <ProgressBar
@@ -16,9 +17,42 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
-        android:indeterminateTint="#00aaff" />
+        android:indeterminateTint="#00aaff"
+        android:visibility="gone" />
 
-    <!-- 频道菜单覆盖层 -->
+    <!-- ═══ 悬浮频道条 — 视频上方半透明底边 ═══ -->
+    <LinearLayout
+        android:id="@+id/channelBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:background="#cc000000"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvChannelBarName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="CCTV-1 综合"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvChannelBarInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="央视 · CH1"
+            android:textColor="#8899aa"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- ═══ 频道列表覆盖层 ═══ -->
     <LinearLayout
         android:id="@+id/channelOverlay"
         android:layout_width="match_parent"
@@ -48,12 +82,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_gravity="center_vertical"
                 android:text="（方向键选择，OK键确认）"
                 android:textColor="#556677"
-                android:textSize="12sp"
-                android:layout_marginStart="12dp"
-                android:layout_gravity="center_vertical" />
-
+                android:textSize="12sp" />
         </LinearLayout>
 
         <!-- 频道网格 -->
@@ -65,20 +98,19 @@
             android:clipToPadding="false"
             android:padding="16dp" />
 
-        <!-- 底部信息 -->
+        <!-- 底部提示 -->
         <TextView
-            android:id="@+id/tvChannelInfo"
+            android:id="@+id/tvOverlayInfo"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="#16213e"
             android:gravity="center"
-            android:text="CCTV-1 综合"
+            android:text="按数字键快速换台 · 上下键切台"
             android:textColor="#00aaff"
-            android:textSize="16sp" />
-
+            android:textSize="14sp" />
     </LinearLayout>
 
-    <!-- 顶部栏 -->
+    <!-- ═══ 顶部返回键 ═══ -->
     <RelativeLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
@@ -99,18 +131,17 @@
             android:contentDescription="返回" />
 
         <TextView
-            android:id="@+id/tvChannelName"
+            android:id="@+id/tvTopTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="CCTV-1 综合"
+            android:text="轻看TV"
             android:textColor="#ffffff"
             android:textSize="20sp"
             android:textStyle="bold" />
-
     </RelativeLayout>
 
-    <!-- 底部免费版提示栏 -->
+    <!-- ═══ 底部免费版升级条 ═══ -->
     <LinearLayout
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
@@ -142,7 +173,6 @@
             android:textColor="#ffffff"
             android:textSize="13sp"
             android:textStyle="bold" />
-
     </LinearLayout>
 
 </FrameLayout>

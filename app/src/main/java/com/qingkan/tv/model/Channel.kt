@@ -4,5 +4,5 @@ data class Channel(
     val id: Int,
     val name: String,
     val url: String,
-    val logo: String = ""
+    val group: String = "CCTV"  // CCTV / 卫视 / 数字
 )
