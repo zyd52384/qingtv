@@ -22,7 +22,6 @@ object ChannelData {
         Channel(15, "CCTV-15 音乐", "https://tv.cctv.com/live/cctv15"),
         Channel(16, "CCTV-16 奥林匹克", "https://tv.cctv.com/live/cctv16"),
         Channel(17, "CCTV-17 农业农村", "https://tv.cctv.com/live/cctv17"),
-        Channel(18, "CCTV-4K", "https://tv.cctv.com/live/cctv4k"),
-        Channel(19, "CCTV-新闻", "https://tv.cctv.com/live/cctvxinwen"),
+        Channel(18, "CCTV-新闻", "https://tv.cctv.com/live/cctvxinwen"),
     )
 }
