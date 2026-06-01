@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">轻看TV</string>
+    <string name="channel_list_title">频道列表</string>
+    <string name="free_version">轻看TV · 免费版</string>
+    <string name="upgrade_title">解锁全屏播放</string>
+</resources>

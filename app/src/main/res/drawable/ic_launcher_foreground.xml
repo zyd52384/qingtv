@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="192dp"
+    android:height="192dp"
+    android:viewportWidth="192"
+    android:viewportHeight="192">
+    <!-- 背景圆 -->
+    <path
+        android:fillColor="#16213e"
+        android:pathData="M96,96m-96,0a96,96 0,1 1,192 0a96,96 0,1 1,-192 0" />
+    <!-- 电视轮廓 -->
+    <path
+        android:fillColor="#00aaff"
+        android:pathData="M60,56h72c4.4,0 8,3.6 8,8v56c0,4.4 -3.6,8 -8,8H60c-4.4,0 -8,-3.6 -8,-8V64c0,-4.4 3.6,-8 8,-8z" />
+    <!-- 屏幕 -->
+    <path
+        android:fillColor="#1a1a2e"
+        android:pathData="M68,68h56c2.2,0 4,1.8 4,4v44c0,2.2 -1.8,4 -4,4H68c-2.2,0 -4,-1.8 -4,-4V72c0,-2.2 1.8,-4 4,-4z" />
+    <!-- 播放三角 -->
+    <path
+        android:fillColor="#00aaff"
+        android:pathData="M84,84v24l18,-12z" />
+    <!-- 底座 -->
+    <path
+        android:fillColor="#8899aa"
+        android:pathData="M80,128h32l-8,12H88z" />
+</vector>
